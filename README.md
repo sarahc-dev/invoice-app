@@ -40,3 +40,26 @@ Expected Behaviour
     - If the invoice being edited is a "draft", the status needs to be updated to "pending" when the "Save Changes" button is clicked. All fields are required at this stage.
 - Users should be able to mark invoices as paid by clicking the "Mark as Paid" button. This should change the invoice's status to "paid".
 - Users should receive a confirmation modal when trying to delete invoices.
+
+## Planning
+
+### API routes
+
+| HTTP verb | API endpoint  | Purpose               |
+|-----------|---------------|-----------------------|
+| GET       | /invoices     | Gets all invoices     | 
+| POST      | /invoices     | Add a new invoice     |
+| GET       | /invoices/:id | Gets a single invoice |
+| PUT       | /invoices/:id | Edits an invoice      |
+| PATCH     | /invoices/:id | Edits invoice status  |
+| DELETE    | /invoices/:id | Deletes an invoice    |
+
+I'm going to start by building the app without user authentication and add this in later. In my app I need a list of all invoices and the details of individual invoices. I considered whether to have one API 
+route that returns all invoices (with all data) and manage this client side by passing individual invoices as props. Or 
+whether to get individual invoices by through another request. I decided on the second option, firstly because there is
+a lot of fields in the invoice - so I would initially be getting more data than is necessary especially if there was
+a lot of invoices. Also, the invoice contains an items list. As I am using SQL I think this is going to be a separate 
+table, so it feels more appropriate to fetch the joined data per invoice. I also decided to make a separate PUT and 
+PATCH request based on the design file. The edit invoice screen is the whole form - so I have access to all the data and
+to ensure consistency I think is better to replace the item with the edited one. Whereas updating the status is a button 
+click to update a single field - so a PATCH request seems more appropriate.
